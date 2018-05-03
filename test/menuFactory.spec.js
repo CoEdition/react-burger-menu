@@ -436,21 +436,45 @@ describe('menuFactory', () => {
       expect(wrapperElement.style.color).to.equal('');
       expect(wrapperElement.style.position).to.equal('');
     });
+  });
 
-    it('sets styles on html and body elements', () => {
-      let html = document.querySelector('html');
-      let body = document.querySelector('body');
-      component.handleExternalWrapper('page-wrap', styles, true);
-      expect(html.style['overflow-x']).to.equal('hidden');
-      expect(body.style['overflow-x']).to.equal('hidden');
+  describe('disableBackgroundScroll method', () => {
+    it('disables the background scroll effect if disableBackgroundScroll is true', () => {
+      const html = document.querySelector('html');
+      const body = document.querySelector('body');
+
+      Menu = menuFactory(mockStyles.full);
+      component = TestUtils.renderIntoDocument(<Menu disableBackgroundScroll={ true } />);
+      component.disableBackgroundScroll(true);
+
+      expect(html.style.position).to.equal('fixed');
+      expect(body.style.position).to.equal('fixed');
+      expect(html.style.width).to.equal('0px');
+      expect(body.style.width).to.equal('0px');
     });
+    it('enables the background scroll effect when the menu is opening', () => {
+      const html = document.querySelector('html');
+      const body = document.querySelector('body');
 
-    it('clears styles from html and body elements', () => {
-      let html = document.querySelector('html');
-      let body = document.querySelector('body');
-      component.handleExternalWrapper('page-wrap', styles, false);
-      expect(html.style['overflow-x']).to.equal('');
-      expect(body.style['overflow-x']).to.equal('');
+      Menu = menuFactory(mockStyles.full);
+      component = TestUtils.renderIntoDocument(<Menu disableBackgroundScroll={ true } />);
+      component.disableBackgroundScroll(false);
+
+      expect(html.style.position).to.equal('');
+      expect(body.style.position).to.equal('');
+      expect(html.style.width).to.equal('');
+      expect(body.style.width).to.equal('');
+    });
+    it('does nothing if disableBackgroundScroll is false', () => {
+      const html = document.querySelector('html');
+      const body = document.querySelector('body');
+
+      Menu = menuFactory(mockStyles.full);
+      component = TestUtils.renderIntoDocument(<Menu disableBackgroundScroll={ false } />);
+      component.disableBackgroundScroll(true);
+
+      expect(html.style.position).to.equal('');
+      expect(body.style.position).to.equal('');
     });
   });
 

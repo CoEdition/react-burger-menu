@@ -63,8 +63,6 @@ export default styles => {
     // Throws and returns if the required external elements don't exist,
     // which means any external page animations won't be applied.
     handleExternalWrapper(id, wrapperStyles, set) {
-      const html = document.querySelector('html');
-      const body = document.querySelector('body');
       const wrapper = document.getElementById(id);
 
       if (!wrapper) {
@@ -80,9 +78,20 @@ export default styles => {
         }
       }
 
-      // Prevent any horizontal scroll.
+      this.disableBackgroundScroll(set);
+    }
+
+    disableBackgroundScroll(set) {
+      if (!this.props.disableBackgroundScroll) {
+        return;
+      }
+
+      const html = document.querySelector('html');
+      const body = document.querySelector('body');
+
       [html, body].forEach(element => {
-        element.style['overflow-x'] = set ? 'hidden' : '';
+        element.style.width = set ? element.offsetWidth + 'px' : '';
+        element.style.position = set ? 'fixed' : '';
       });
     }
 
@@ -313,7 +322,8 @@ export default styles => {
         : PropTypes.string,
     right: PropTypes.bool,
     styles: PropTypes.object,
-    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    disableBackgroundScroll: PropTypes.bool
   };
 
   Menu.defaultProps = {
@@ -334,7 +344,8 @@ export default styles => {
     overlayClassName: '',
     pageWrapId: '',
     styles: {},
-    width: 300
+    width: 300,
+    disableBackgroundScroll: false
   };
 
   return Menu;

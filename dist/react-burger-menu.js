@@ -1547,8 +1547,6 @@ exports['default'] = function (styles) {
                 {
                     key: 'handleExternalWrapper',
                     value: function handleExternalWrapper(id, wrapperStyles, set) {
-                        var html = document.querySelector('html');
-                        var body = document.querySelector('body');
                         var wrapper = document.getElementById(id);
                         if (!wrapper) {
                             console.error('Element with ID \'' + id + '\' not found');
@@ -1560,11 +1558,23 @@ exports['default'] = function (styles) {
                                 wrapper.style[prop] = set ? builtStyles[prop] : '';
                             }
                         }
+                        this.disableBackgroundScroll(set);
+                    }
+                },
+                {
+                    key: 'disableBackgroundScroll',
+                    value: function disableBackgroundScroll(set) {
+                        if (!this.props.disableBackgroundScroll) {
+                            return;
+                        }
+                        var html = document.querySelector('html');
+                        var body = document.querySelector('body');
                         [
                             html,
                             body
                         ].forEach(function (element) {
-                            element.style['overflow-x'] = set ? 'hidden' : '';
+                            element.style.width = set ? element.offsetWidth + 'px' : '';
+                            element.style.position = set ? 'fixed' : '';
                         });
                     }
                 },
@@ -1763,7 +1773,8 @@ exports['default'] = function (styles) {
         width: _propTypes2['default'].oneOfType([
             _propTypes2['default'].number,
             _propTypes2['default'].string
-        ])
+        ]),
+        disableBackgroundScroll: _propTypes2['default'].bool
     };
     Menu.defaultProps = {
         bodyClassName: '',
@@ -1784,7 +1795,8 @@ exports['default'] = function (styles) {
         overlayClassName: '',
         pageWrapId: '',
         styles: {},
-        width: 300
+        width: 300,
+        disableBackgroundScroll: false
     };
     return Menu;
 };
