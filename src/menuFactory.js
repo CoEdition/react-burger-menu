@@ -56,6 +56,9 @@ export default styles => {
           set
         );
       }
+      if (this.props.disableBackgroundScroll) {
+        this.disableBackgroundScroll(set);
+      }
     }
 
     // Sets or unsets styles on DOM elements outside the menu component.
@@ -77,15 +80,9 @@ export default styles => {
           wrapper.style[prop] = set ? builtStyles[prop] : '';
         }
       }
-
-      this.disableBackgroundScroll(set);
     }
 
     disableBackgroundScroll(set) {
-      if (!this.props.disableBackgroundScroll) {
-        return;
-      }
-
       const html = document.querySelector('html');
       const body = document.querySelector('body');
 
