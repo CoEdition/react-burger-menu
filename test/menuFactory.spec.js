@@ -465,17 +465,6 @@ describe('menuFactory', () => {
       expect(html.style.width).to.equal('');
       expect(body.style.width).to.equal('');
     });
-    it('does nothing if disableBackgroundScroll is false', () => {
-      const html = document.querySelector('html');
-      const body = document.querySelector('body');
-
-      Menu = menuFactory(mockStyles.full);
-      component = TestUtils.renderIntoDocument(<Menu disableBackgroundScroll={ false } />);
-      component.disableBackgroundScroll(true);
-
-      expect(html.style.position).to.equal('');
-      expect(body.style.position).to.equal('');
-    });
   });
 
   describe('listenForClose method', () => {
